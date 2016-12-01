@@ -100,6 +100,14 @@ class ProbabilityController {
       .domain(dataDomain)
       .rangeRound([0, width]);
 
+    const xAxisOffset = width / (dataDomain[1] - dataDomain[0]);
+    const xAxisStart = Math.round(xAxisOffset * 1.5);
+    const xAxisBackingStart = Math.round(xAxisOffset * 0.5);
+
+    const xAxis = this.$d3.scaleLinear()
+      .domain([dataDomain[0] + 1, dataDomain[1] - 1])
+      .rangeRound([0, width - (xAxisOffset * 3)]);
+
     const hgram = this.$d3.histogram()
       .domain(x.domain())
       .thresholds(x.ticks(dataDomain[1] - dataDomain[0]));
@@ -115,6 +123,17 @@ class ProbabilityController {
     const y = this.$d3.scaleLinear()
       .domain([0, domainMax])
       .range([height, 0]);
+
+    const xAxisBackingData = [[bins[0].x0, bins[0].x1], [bins[bins.length - 1].x0, bins[bins.length - 1].x1]];
+    this.$log.log(xAxisBackingData);
+
+    const xAxisBackingLine = this.$d3.line()
+        .x(d => {
+          return x(d[0]);
+        })
+        .y(() => {
+          return y(0);
+        });
 
     g.selectAll(".axis.axis--x")
       .remove();
@@ -153,8 +172,16 @@ class ProbabilityController {
 
     g.append("g")
       .attr("class", "axis axis--x")
-      .attr("transform", `translate(0,${height})`)
-      .call(this.$d3.axisBottom(x));
+      .attr("transform", `translate(${xAxisStart}, ${height})`)
+      .call(this.$d3.axisBottom(xAxis));
+
+    g.append("path")
+        .datum(xAxisBackingData)
+        .attr("class", "domain")
+        .attr("stroke", "#000")
+        .attr("fill", "none")
+        .attr("transform", `translate(${xAxisBackingStart}, 0.5)`)
+        .attr("d", xAxisBackingLine);
   }
 
   mapSelectionToCard(roll, deck) {
@@ -329,31 +356,7 @@ class ProbabilityController {
   }
 
   togglePanel(id) {
-    this.$log.log(id);
-
     this[id] = !this[id];
-
-    const panel = this.$document[0].getElementById(id);
-    let y = panel;
-    let x = y;
-    y = x;
-    x = y;
-
-    this.$log.log(this);
-
-    // panel.getElementsByTagName('.panel-body').slideUp();
-// $(document).on('click', '.panel-heading span.clickable', function(e){
-//     var $this = $(this);
-//   if(!$this.hasClass('panel-collapsed')) {
-//     $this.parents('.panel').find('.panel-body').slideUp();
-//     $this.addClass('panel-collapsed');
-//     $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-//   } else {
-//     $this.parents('.panel').find('.panel-body').slideDown();
-//     $this.removeClass('panel-collapsed');
-//     $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-//   }
-// })
   }
 }
 

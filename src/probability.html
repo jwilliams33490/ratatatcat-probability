@@ -15,68 +15,72 @@
 
 <a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)"></a-header>
 <div class="container">
-	<div class="row col-lg-12">
-		<div class="col-xs-6">
-			<div id="card1" class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Card 1 Possibilities
-					<span class="pull-right" ng-click="$ctrl.togglePanel('showC1')" ng-switch on="$ctrl.showC1">
-						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-					</span>
-				</h3>
-			  </div>
-			  <div class="panel-body" ng-show="$ctrl.showC1">
-				<svg id="card1Prob" width="400" height="200"></svg>
-			  </div>
-			</div>		
-		</div>
-		<div class="col-xs-6">
-			<div id="card2" class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Card 2 Possibilities
-					<span class="pull-right" ng-click="$ctrl.togglePanel('showC2')" ng-switch on="$ctrl.showC2">
-						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-					</span>
-				</h3>
-			  </div>
-			  <div class="panel-body" ng-show="$ctrl.showC2">
-				<svg id="card2Prob" width="400" height="200"></svg>
-			  </div>
-			</div>		
+	<div class="col-lg-6">
+		<div class="col-md-12">
+			<div class="col-sm-6">
+				<div id="card1" class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Card 1 Possibilities
+						<span class="pull-right" ng-click="$ctrl.togglePanel('showC1')" ng-switch on="$ctrl.showC1">
+							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+						</span>
+					</h3>
+				  </div>
+				  <div class="panel-body" ng-show="$ctrl.showC1">
+					<svg id="card1Prob" width="400" height="200"></svg>
+				  </div>
+				</div>		
+			</div>
+			<div class="col-sm-6">
+				<div id="card2" class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Card 2 Possibilities
+						<span class="pull-right" ng-click="$ctrl.togglePanel('showC2')" ng-switch on="$ctrl.showC2">
+							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+						</span>
+					</h3>
+				  </div>
+				  <div class="panel-body" ng-show="$ctrl.showC2">
+					<svg id="card2Prob" width="400" height="200"></svg>
+				  </div>
+				</div>		
+			</div>
 		</div>
 	</div>
-	<div class="row col-lg-12">
-		<div class="col-xs-6">
-			<div id="card3" class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Card 3 Possibilities
-					<span class="pull-right" ng-click="$ctrl.togglePanel('showC3')" ng-switch on="$ctrl.showC3">
-						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-					</span>
-				</h3>
-			  </div>
-			  <div class="panel-body" ng-show="$ctrl.showC3">
-				<svg id="card3Prob" width="400" height="200"></svg>
-			  </div>
-			</div>		
-		</div>
-		<div class="col-xs-6">
-			<div id="card4" class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Card 4 Possibilities
-					<span class="pull-right" ng-click="$ctrl.togglePanel('showC4')" ng-switch on="$ctrl.showC4">
-						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-					</span>
-				</h3>
-			  </div>
-			  <div class="panel-body" ng-show="$ctrl.showC4">
-				<svg id="card4Prob" width="400" height="200"></svg>
-			  </div>
-			</div>		
+	<div class="col-lg-6">
+		<div class="col-md-12">
+			<div class="col-sm-6">
+				<div id="card3" class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Card 3 Possibilities
+						<span class="pull-right" ng-click="$ctrl.togglePanel('showC3')" ng-switch on="$ctrl.showC3">
+							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+						</span>
+					</h3>
+				  </div>
+				  <div class="panel-body" ng-show="$ctrl.showC3">
+					<svg id="card3Prob" width="400" height="200"></svg>
+				  </div>
+				</div>		
+			</div>
+			<div class="col-sm-6">
+				<div id="card4" class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Card 4 Possibilities
+						<span class="pull-right" ng-click="$ctrl.togglePanel('showC4')" ng-switch on="$ctrl.showC4">
+							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+						</span>
+					</h3>
+				  </div>
+				  <div class="panel-body" ng-show="$ctrl.showC4">
+					<svg id="card4Prob" width="400" height="200"></svg>
+				  </div>
+				</div>		
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -95,18 +99,18 @@
 		<div class="col-xs-12">
 			<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Combined Possibilities</h3>
+			    <h3 class="panel-title">What about each possible number?</h3>
 			  </div>
 			  <div class="panel-body">
 				  <table class="table">
-					  <caption>Probabilities for each number:</caption>
+					  <caption>Probabilities for each card number:</caption>
 					  <thead>
 					  	<tr>
 					  		<th>Id</th>
 					  		<th>Fraction</th>
 					  		<th>Decimal</th>
-					  		<th>Percent</th>
-					  		<th>Cumulative Percent</th>
+					  		<th>Percentage</th>
+					  		<th>Cumulative Percentage</th>
 					  	</tr>
 					  </thead>
 					  <tbody>
