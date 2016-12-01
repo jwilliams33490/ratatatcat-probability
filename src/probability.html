@@ -13,68 +13,127 @@
 
 </style>
 
-<div>
-NotLoaded
-
+<a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)"></a-header>
+<div class="container">
+	<div class="row col-lg-12">
+		<div class="col-xs-6">
+			<div id="card1" class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Card 1 Possibilities
+					<span class="pull-right" ng-click="$ctrl.togglePanel('showC1')" ng-switch on="$ctrl.showC1">
+						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+					</span>
+				</h3>
+			  </div>
+			  <div class="panel-body" ng-show="$ctrl.showC1">
+				<svg id="card1Prob" width="400" height="200"></svg>
+			  </div>
+			</div>		
+		</div>
+		<div class="col-xs-6">
+			<div id="card2" class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Card 2 Possibilities
+					<span class="pull-right" ng-click="$ctrl.togglePanel('showC2')" ng-switch on="$ctrl.showC2">
+						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+					</span>
+				</h3>
+			  </div>
+			  <div class="panel-body" ng-show="$ctrl.showC2">
+				<svg id="card2Prob" width="400" height="200"></svg>
+			  </div>
+			</div>		
+		</div>
+	</div>
+	<div class="row col-lg-12">
+		<div class="col-xs-6">
+			<div id="card3" class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Card 3 Possibilities
+					<span class="pull-right" ng-click="$ctrl.togglePanel('showC3')" ng-switch on="$ctrl.showC3">
+						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+					</span>
+				</h3>
+			  </div>
+			  <div class="panel-body" ng-show="$ctrl.showC3">
+				<svg id="card3Prob" width="400" height="200"></svg>
+			  </div>
+			</div>		
+		</div>
+		<div class="col-xs-6">
+			<div id="card4" class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Card 4 Possibilities
+					<span class="pull-right" ng-click="$ctrl.togglePanel('showC4')" ng-switch on="$ctrl.showC4">
+						<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
+						<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
+					</span>
+				</h3>
+			  </div>
+			  <div class="panel-body" ng-show="$ctrl.showC4">
+				<svg id="card4Prob" width="400" height="200"></svg>
+			  </div>
+			</div>		
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Combined Possibilities</h3>
+			  </div>
+			  <div class="panel-body">
+				<svg id="handProb" width="900" height="200"></svg>
+			  </div>
+			</div>		
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Combined Possibilities</h3>
+			  </div>
+			  <div class="panel-body">
+				  <table class="table">
+					  <caption>Probabilities for each number:</caption>
+					  <thead>
+					  	<tr>
+					  		<th>Id</th>
+					  		<th>Fraction</th>
+					  		<th>Decimal</th>
+					  		<th>Percent</th>
+					  		<th>Cumulative Percent</th>
+					  	</tr>
+					  </thead>
+					  <tbody>
+						  <tr ng-repeat="suit in $ctrl.deckCumulativeData">
+					  		<tH>{{suit.id}}</th>
+					  		<td>{{suit.count}} / {{$ctrl.deckInUse.length}}</td>
+					  		<td>{{suit.count / $ctrl.deckInUse.length | number:4}}</td>
+					  		<td>{{suit.count / $ctrl.deckInUse.length * 100 | number:2}}%</td>
+					  		<td>{{suit.cumulativeCount / $ctrl.deckInUse.length * 100 | number:0}}%</td>
+					  	</tr>
+					  </tbody>
+				  </table>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Cumulative Probabilities graph. Or: 'Did I just draw a card worth keeping?'</h3>
+				  </div>
+				  <div class="panel-body">
+					  <svg id="cumulativeProb" width="900" height="500"></svg>
+				  </div>
+				</div>		
+			  </div>
+			</div>		
+		</div>
+	</div>
 </div>
 
-<!-- <svg id="real" width="960" height="500"></svg>
-<svg id="test" width="960" height="500"></svg>
- --><svg id="card1Prob" width="960" height="200"></svg>
-<svg id="card2Prob" width="960" height="200"></svg>
-<svg id="handProb" width="960" height="200"></svg>
+<!-- 
+<table class="table"> <caption>Optional table caption.</caption> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table>
 
-<!-- <script>
-// console.log('hi');
-// d3.select("#test").append("text");
-var data = d3.range(1000).map(d3.randomBates(10));
-
-var formatCount = d3.format(",.0f");
-
-var svg = d3.select("svg"),
-    margin = {top: 10, right: 30, bottom: 30, left: 30},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-var x = d3.scaleLinear()
-    .rangeRound([0, width]);
-
-var bins = d3.histogram()
-    .domain(x.domain())
-    .thresholds(x.ticks(20))
-    (data);
-
-var y = d3.scaleLinear()
-    .domain([0, d3.max(bins, function(d) { return d.length; })])
-    .range([height, 0]);
-
-var bar = g.selectAll(".bar")
-  .data(bins)
-  .enter().append("g")
-    .attr("class", "bar")
-    .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; });
-
-bar.append("rect")
-    .attr("x", 1)
-    .attr("width", x(bins[0].x1) - x(bins[0].x0) - 1)
-    .attr("height", function(d) { return height - y(d.length); });
-
-bar.append("text")
-    .attr("dy", ".75em")
-    .attr("y", 6)
-    .attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
-    .attr("text-anchor", "middle")
-    .text(function(d) { return formatCount(d.length); });
-
-g.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-
-</script>
  -->
-<div>
-
-Loaded
-</div>

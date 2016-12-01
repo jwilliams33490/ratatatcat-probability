@@ -5,12 +5,9 @@ class d3Service {
 
     function onScriptLoad() {
       // Load client in the browser
-      $log.log('hi4');
-      const l = $log;
       const d1 = d;
       // const self = this;
       $rootScope.$apply(() => {
-        l.log('hi2');
         d1.resolve($window.d3);
       });
     }
@@ -23,18 +20,14 @@ class d3Service {
     scriptTag.async = true;
     scriptTag.src = 'http://d3js.org/d3.v4.min.js';
     scriptTag.onreadystatechange = function () {
-      this.$log.log('hi3');
       if (this.readyState === 'complete') {
         onScriptLoad();
       }
     };
     scriptTag.onload = onScriptLoad;
-    this.$log.log('hi');
 
     const s = $document[0].getElementsByTagName('body')[0];
-    this.$log.log(s);
     s.appendChild(scriptTag);
-    this.$log.log(s);
 
     return {
       d3: () => {

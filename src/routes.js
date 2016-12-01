@@ -8,10 +8,6 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider
     .state('app', {
       url: '/',
-      component: 'app'
-    })
-    .state('prob', {
-      url: '/prob',
       component: 'probability'
     })
     ;
