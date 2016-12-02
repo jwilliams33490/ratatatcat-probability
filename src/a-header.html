@@ -31,7 +31,12 @@
           </div>
           <input type="number" class="form-control" min="-1" max="9" ng-disabled="!$ctrl.useCard1" ng-model="$ctrl.card1">
           <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard1')><i class="glyphicon glyphicon-remove"></i></button>
+            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard1')>
+              <span ng-switch on="$ctrl.useCard1">
+                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
+                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
+              </span>
+            </button>
           </div>
         </div>
         <div class="input-group">
@@ -44,7 +49,12 @@
           </div>
           <input type="number" class="form-control" min="-1" max="9" ng-disabled="!$ctrl.useCard2" ng-model="$ctrl.card2">
           <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard2')><i class="glyphicon glyphicon-remove"></i></button>
+            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard2')>
+              <span ng-switch on="$ctrl.useCard2">
+                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
+                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
+              </span>
+            </button>
           </div>
         </div>
         <div class="input-group">
@@ -57,7 +67,12 @@
           </div>
           <input type="number" class="form-control" min="-1" max="9" ng-disabled="!$ctrl.useCard3" ng-model="$ctrl.card3">
           <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard3')><i class="glyphicon glyphicon-remove"></i></button>
+            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard3')>
+              <span ng-switch on="$ctrl.useCard3">
+                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
+                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
+              </span>
+            </button>
           </div>
         </div>
         <div class="input-group">
@@ -70,7 +85,12 @@
           </div>
           <input type="number" class="form-control" min="-1" max="9" ng-disabled="!$ctrl.useCard4" ng-model="$ctrl.card4">
           <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard4')><i class="glyphicon glyphicon-remove"></i></button>
+            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard4')>
+              <span ng-switch on="$ctrl.useCard4">
+                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
+                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
+              </span>
+            </button>
           </div>
         </div>
       </form>
