@@ -13,14 +13,15 @@
 
 </style>
 
-<a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)"></a-header>
+<a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)" on-cards-array-changed="$ctrl.onCardsArrayChanged(enabledArray)"></a-header>
 <div class="container">
 	<div class="col-lg-6">
 		<div class="col-md-12">
-			<div class="col-sm-6">
+			<div class="col-sm-6" ng-show="$ctrl.useCard1">
 				<div id="card1" class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Card 1 Possibilities
+						<span class="badge">{{$ctrl.c1ExpectedValue}}</span>
 						<span class="pull-right" ng-click="$ctrl.togglePanel('showC1')" ng-switch on="$ctrl.showC1">
 							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
 							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
@@ -32,10 +33,11 @@
 				  </div>
 				</div>		
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" ng-show="$ctrl.useCard2">
 				<div id="card2" class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Card 2 Possibilities
+						<span class="badge">{{$ctrl.c2ExpectedValue}}</span>
 						<span class="pull-right" ng-click="$ctrl.togglePanel('showC2')" ng-switch on="$ctrl.showC2">
 							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
 							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
@@ -51,10 +53,11 @@
 	</div>
 	<div class="col-lg-6">
 		<div class="col-md-12">
-			<div class="col-sm-6">
+			<div class="col-sm-6" ng-show="$ctrl.useCard3">
 				<div id="card3" class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Card 3 Possibilities
+						<span class="badge">{{$ctrl.c3ExpectedValue}}</span>
 						<span class="pull-right" ng-click="$ctrl.togglePanel('showC3')" ng-switch on="$ctrl.showC3">
 							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
 							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
@@ -66,10 +69,11 @@
 				  </div>
 				</div>		
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" ng-show="$ctrl.useCard4">
 				<div id="card4" class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Card 4 Possibilities
+						<span class="badge">{{$ctrl.c4ExpectedValue}}</span>
 						<span class="pull-right" ng-click="$ctrl.togglePanel('showC4')" ng-switch on="$ctrl.showC4">
 							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
 							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
@@ -87,7 +91,9 @@
 		<div class="col-xs-12">
 			<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Combined Possibilities</h3>
+			    <h3 class="panel-title">Combined Possibilities
+					<span class="badge">{{$ctrl.handExpectedValue}}</span>
+			    </h3>
 			  </div>
 			  <div class="panel-body">
 				<svg id="handProb" width="900" height="200"></svg>

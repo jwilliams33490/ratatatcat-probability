@@ -3,6 +3,10 @@ class ProbabilityController {
     this.$document = $document;
     this.$log = $log;
     this.$d3 = null;
+    this.useCard1 = true;
+    this.useCard2 = true;
+    this.useCard3 = true;
+    this.useCard4 = true;
     this.card1 = [];
     this.card2 = [];
     this.card3 = [];
@@ -11,6 +15,11 @@ class ProbabilityController {
     this.showC2 = true;
     this.showC3 = true;
     this.showC4 = true;
+    this.c1ExpectedValue = 0;
+    this.c2ExpectedValue = 0;
+    this.c3ExpectedValue = 0;
+    this.c4ExpectedValue = 0;
+    this.handExpectedValue = 0;
     this.hand = [];
     this.deck = this.cards();
     this.valueDeck = this.valueCards();
@@ -47,37 +56,50 @@ class ProbabilityController {
     this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
 
     this.card1 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.numberOfCards > 0) {
+      if (this.useCard1) {
         return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
       }
       return 0;
     });
+    this.c1ExpectedValue = `${Math.round(this.calcAvg(this.card1))}*`;
 
     this.card2 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.numberOfCards > 1) {
+      if (this.useCard2) {
         return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
       }
       return 0;
     });
+    this.c2ExpectedValue = `${Math.round(this.calcAvg(this.card2))}*`;
 
     this.card3 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.numberOfCards > 2) {
+      if (this.useCard3) {
         return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
       }
       return 0;
     });
+    this.c3ExpectedValue = `${Math.round(this.calcAvg(this.card3))}*`;
 
     this.card4 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.numberOfCards > 3) {
+      if (this.useCard4) {
         return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
       }
       return 0;
     });
+    this.c4ExpectedValue = `${Math.round(this.calcAvg(this.card4))}*`;
 
     this.hand = [];
     for (let i = 0; i < this.numberOfSelections; i++) {
       this.hand[i] = this.card1[i] + this.card2[i] + this.card3[i] + this.card4[i];
     }
+    this.handExpectedValue = `${Math.round(this.calcAvg(this.hand))}*`;
+  }
+
+  calcAvg(arrayOfValues) {
+    let i = 0;
+    arrayOfValues.forEach(n => {
+      i += n;
+    });
+    return i / arrayOfValues.length;
   }
 
   buildCardHistogram(id, data, dataDomain, newDraw) {
@@ -124,12 +146,11 @@ class ProbabilityController {
       .domain([0, domainMax])
       .range([height, 0]);
 
-    const xAxisBackingData = [[bins[0].x0, bins[0].x1], [bins[bins.length - 1].x0, bins[bins.length - 1].x1]];
-    this.$log.log(xAxisBackingData);
+    const xAxisBackingData = [bins[0], bins[bins.length - 1]];
 
     const xAxisBackingLine = this.$d3.line()
         .x(d => {
-          return x(d[0]);
+          return x(d.x0);
         })
         .y(() => {
           return y(0);
@@ -306,9 +327,7 @@ class ProbabilityController {
     x.domain(this.$d3.extent(data, d => {
       return d[0];
     }));
-    y.domain(this.$d3.extent(data, d => {
-      return d[1];
-    }));
+    y.domain([0, 100]);
 
     g.append("g")
         .attr("class", "axis axis--x")
@@ -357,6 +376,21 @@ class ProbabilityController {
 
   togglePanel(id) {
     this[id] = !this[id];
+  }
+
+  onCardsArrayChanged(enabledArray) {
+    this.useCard1 = enabledArray[0];
+    this.useCard2 = enabledArray[1];
+    this.useCard3 = enabledArray[2];
+    this.useCard4 = enabledArray[3];
+    let i = 0;
+    enabledArray.forEach(n => {
+      if (n) {
+        i++;
+      }
+    });
+    this.numberOfCards = i;
+    this.setCardDataAndRedrawHistograms(false);
   }
 }
 
