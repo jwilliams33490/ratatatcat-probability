@@ -454,7 +454,6 @@ class ProbabilityController {
   }
 
   onCardsArrayChanged(enabledArray) {
-    this.$log.log(this.cards);
     let i = 0;
     let idx = 0;
     enabledArray.forEach(n => {
@@ -465,9 +464,19 @@ class ProbabilityController {
         i++;
       }
     });
-    this.$log.log(this.cards);
     this.numberOfCards = i;
     this.setCardDataAndRedrawHistograms(false);
+  }
+
+  onCardValuesArrayChanged(valuesArray) {
+    this.$log.log(this.cards);
+    let idx = 0;
+    valuesArray.forEach(n => {
+      this.cards[idx].actualValue = n;
+      idx++;
+    });
+    this.setCardDataAndRedrawHistograms(false);
+    this.$log.log(this.cards);
   }
 }
 

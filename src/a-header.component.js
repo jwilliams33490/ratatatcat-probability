@@ -47,6 +47,12 @@ class AHeaderController {
     }
     this.numberOfCards = i;
   }
+
+  changeCardValue() {
+    if (this.onCardValuesArrayChanged) {
+      this.onCardValuesArrayChanged({valuesArray: [this.card1, this.card2, this.card3, this.card4]});
+    }
+  }
 }
 
 AHeaderController.$inject = ['$log'];
@@ -57,6 +63,7 @@ export const aHeader = {
   bindings: {
     onNumRetriesChanged: '&',
     onNumCardsChanged: '&',
-    onCardsArrayChanged: '&'
+    onCardsArrayChanged: '&',
+    onCardValuesArrayChanged: '&'
   }
 };
