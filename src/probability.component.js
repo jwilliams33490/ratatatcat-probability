@@ -140,8 +140,6 @@ class ProbabilityController {
       return d.length;
     });
 
-    // const t = this.$d3.transition().duration(7500);
-
     const y = this.$d3.scaleLinear()
       .domain([0, domainMax])
       .range([height, 0]);
@@ -288,13 +286,16 @@ class ProbabilityController {
   }
 
   drawCumulativeProbabilityGraph() {
+    this.drawSimpleCumulativeProbabilityGraph();
+    this.drawMoreAccurateCumulativeProbabilityGraph();
+  }
+
+  drawSimpleCumulativeProbabilityGraph() {
     const svg = this.$d3.select("#cumulativeProb");
     const margin = {top: 20, right: 20, bottom: 30, left: 50};
     const width = Number(svg.attr("width")) - margin.left - margin.right;
     const height = Number(svg.attr("height")) - margin.top - margin.bottom;
     const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-    // const parseTime = this.$d3.timeParse("%d-%b-%y");
 
     const x = this.$d3.scaleLinear()
         .rangeRound([0, width]);
@@ -361,6 +362,96 @@ class ProbabilityController {
         .attr("stroke-width", 2)
         .attr("fill", "none")
         .attr("d", line);
+  }
+
+  drawMoreAccurateCumulativeProbabilityGraph() {
+    const svg = this.$d3.select("#betterCumulativeProb");
+    const margin = {top: 20, right: 20, bottom: 30, left: 50};
+    const width = Number(svg.attr("width")) - margin.left - margin.right;
+    const height = Number(svg.attr("height")) - margin.top - margin.bottom;
+    const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Define the div for the tooltip
+    const div = this.$d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    const x = this.$d3.scaleLinear()
+        .rangeRound([0, width]);
+
+    const y = this.$d3.scaleLinear()
+        .rangeRound([height, 0]);
+
+    const medianline = this.$d3.line()
+        .x(d => {
+          return x(d[0]);
+        })
+        .y(() => {
+          return y(50);
+        });
+
+    const basicData = [];
+    this.deckCumulativeData.forEach(suit => {
+      const sub = [suit.id, (suit.cumulativeCount / this.deckInUse.length * 100)];
+      basicData.push(sub);
+    });
+
+    x.domain(this.$d3.extent(basicData, d => {
+      return d[0];
+    }));
+    y.domain([0, 100]);
+
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", `translate(0, ${height})`)
+        .call(this.$d3.axisBottom(x));
+
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .call(this.$d3.axisLeft(y))
+      .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .style("text-anchor", "end")
+        .text("Cumulative Pct (%)");
+
+    g.append("path")
+        .datum([basicData[0], basicData[basicData.length - 1]])
+        .attr("class", "line")
+        .style("stroke", "#ddd")
+        .style("stroke-dasharray", "4,4")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", medianline);
+
+    basicData.forEach(lineCoordinates => {
+      g.append("circle")
+          .datum(lineCoordinates)
+          .attr("cy", d => {
+            return y(d[1]);
+          })
+          .attr("cx", d => {
+            return x(d[0]);
+          })
+          .attr("r", 4)
+          .attr("stroke", "green")
+          .attr("fill", "green")
+          .on("mouseover", d => {
+            div.transition()
+              .duration(200)
+              .style("opacity", 0.9);
+            div.html(`${d[0]}, ${Number(d[1]).toFixed(2)}`)
+              .style("left", `${this.$d3.event.pageX}px`)
+              .style("top", `${(this.$d3.event.pageY - 28)}px`);
+          })
+          .on("mouseout", () => {
+            div.transition()
+              .duration(500)
+              .style("opacity", 0);
+          });
+    });
   }
 
   onNumRetriesChanged(value) {
