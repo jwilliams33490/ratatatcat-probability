@@ -71,7 +71,10 @@ class ProbabilityController {
       }
       return 0;
     });
-    card.expectedValue = `${this.calcAvg(card.deck).toFixed(2)}*`;
+    card.expectedValue = this.calcAvg(card.deck);
+    if (!this.useActualValue(card)) {
+      card.expectedValue = `${card.expectedValue.toFixed(2)}*`;
+    }
   }
 
   useActualValue(card) {
