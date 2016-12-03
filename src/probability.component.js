@@ -3,25 +3,21 @@ class ProbabilityController {
     this.$document = $document;
     this.$log = $log;
     this.$d3 = null;
-    this.useCard1 = true;
-    this.useCard2 = true;
-    this.useCard3 = true;
-    this.useCard4 = true;
-    this.card1 = [];
-    this.card2 = [];
-    this.card3 = [];
-    this.card4 = [];
-    this.showC1 = true;
-    this.showC2 = true;
-    this.showC3 = true;
-    this.showC4 = true;
-    this.c1ExpectedValue = 0;
-    this.c2ExpectedValue = 0;
-    this.c3ExpectedValue = 0;
-    this.c4ExpectedValue = 0;
     this.handExpectedValue = 0;
+
+    this.cards = [];
+    for (let i = 0; i < 4; i++) {
+      const card = {};
+      card.use = true;
+      card.show = true;
+      card.deck = [];
+      card.actualValue = -1;
+      card.expectedValue = 0;
+      this.cards.push(card);
+    }
+
     this.hand = [];
-    this.deck = this.cards();
+    this.deck = this.allCards();
     this.valueDeck = this.valueCards();
     this.deckInUse = this.valueDeck;
     this.deckInUseData = this.setDeckData(this.deckInUse);
@@ -45,53 +41,41 @@ class ProbabilityController {
   setCardDataAndRedrawHistograms(newDraw) {
     this.selectXCardsFromDeck(this.valueDeck);
 
-    this.buildCardHistogram("card1Prob", this.card1, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
-    this.buildCardHistogram("card2Prob", this.card2, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
-    this.buildCardHistogram("card3Prob", this.card3, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
-    this.buildCardHistogram("card4Prob", this.card4, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
+    for (let ci = 0; ci < 4; ci++) {
+      this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].deck, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
+    }
     this.buildCardHistogram("handProb", this.hand, [((this.numberOfCards * this.deckInUseData.suitMin) - 1), (this.numberOfCards * this.deckInUseData.suitMax) + 2], newDraw);
   }
 
   selectXCardsFromDeck(deck) {
     this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
 
-    this.card1 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.useCard1) {
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    this.c1ExpectedValue = `${Math.round(this.calcAvg(this.card1))}*`;
-
-    this.card2 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.useCard2) {
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    this.c2ExpectedValue = `${Math.round(this.calcAvg(this.card2))}*`;
-
-    this.card3 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.useCard3) {
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    this.c3ExpectedValue = `${Math.round(this.calcAvg(this.card3))}*`;
-
-    this.card4 = this.$d3.range(this.numberOfSelections).map(() => {
-      if (this.useCard4) {
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    this.c4ExpectedValue = `${Math.round(this.calcAvg(this.card4))}*`;
+    for (let ci = 0; ci < 4; ci++) {
+      this.selectXCardsFromDeckForOneCard(deck, this.cards[ci]);
+    }
 
     this.hand = [];
     for (let i = 0; i < this.numberOfSelections; i++) {
-      this.hand[i] = this.card1[i] + this.card2[i] + this.card3[i] + this.card4[i];
+      this.hand[i] = this.cards[0].deck[i] + this.cards[1].deck[i] + this.cards[2].deck[i] + this.cards[3].deck[i];
     }
-    this.handExpectedValue = `${Math.round(this.calcAvg(this.hand))}*`;
+    this.handExpectedValue = `${this.calcAvg(this.hand).toFixed(2)}*`;
+  }
+
+  selectXCardsFromDeckForOneCard(deck, card) {
+    card.deck = this.$d3.range(this.numberOfSelections).map(() => {
+      if (card.use) {
+        if (this.useActualValue(card)) {
+          return card.actualValue;
+        }
+        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
+      }
+      return 0;
+    });
+    card.expectedValue = `${this.calcAvg(card.deck).toFixed(2)}*`;
+  }
+
+  useActualValue(card) {
+    return card.actualValue !== -1;
   }
 
   calcAvg(arrayOfValues) {
@@ -127,7 +111,7 @@ class ProbabilityController {
     const xAxisBackingStart = Math.round(xAxisOffset * 0.5);
 
     const xAxis = this.$d3.scaleLinear()
-      .domain([dataDomain[0] + 1, dataDomain[1] - 1])
+      .domain([dataDomain[0] + 1, dataDomain[1] - 2])
       .rangeRound([0, width - (xAxisOffset * 3)]);
 
     const hgram = this.$d3.histogram()
@@ -230,7 +214,7 @@ class ProbabilityController {
     return cards;
   }
 
-  cards() {
+  allCards() {
     const cards = this.valueCards();
     let x = 11;
     const startAt = cards.length - 1;
@@ -465,21 +449,23 @@ class ProbabilityController {
     this.setCardDataAndRedrawHistograms(false);
   }
 
-  togglePanel(id) {
-    this[id] = !this[id];
+  togglePanel(idx) {
+    this.cards[idx].show = !this.cards[idx].show;
   }
 
   onCardsArrayChanged(enabledArray) {
-    this.useCard1 = enabledArray[0];
-    this.useCard2 = enabledArray[1];
-    this.useCard3 = enabledArray[2];
-    this.useCard4 = enabledArray[3];
+    this.$log.log(this.cards);
     let i = 0;
+    let idx = 0;
     enabledArray.forEach(n => {
+      this.cards[idx].use = n;
+      idx++;
+
       if (n) {
         i++;
       }
     });
+    this.$log.log(this.cards);
     this.numberOfCards = i;
     this.setCardDataAndRedrawHistograms(false);
   }
