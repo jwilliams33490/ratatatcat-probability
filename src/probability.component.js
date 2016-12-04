@@ -94,9 +94,19 @@ class ProbabilityController {
 
     const formatCount = this.$d3.format(",.0f");
 
+    let viewPortWidth = Number(h.attr("width"));
+    let viewPortHeight = Number(h.attr("height"));
+
+    if (!h.attr("width")) {
+      viewPortWidth = 400;
+    }
+    if (!h.attr("height")) {
+      viewPortHeight = 200;
+    }
+
     const margin = {top: 10, right: 30, bottom: 30, left: 30};
-    const width = Number(h.attr("width")) - margin.left - margin.right;
-    const height = Number(h.attr("height")) - margin.top - margin.bottom;
+    const width = viewPortWidth - margin.left - margin.right;
+    const height = viewPortHeight - margin.top - margin.bottom;
 
     let g = {};
     if (newDraw) {
@@ -166,15 +176,29 @@ class ProbabilityController {
         return height - y(d.length);
       });
 
-    bar.append("text")
-      // .transtion(t)
-      .attr("dy", ".75em")
-      .attr("y", 6)
-      .attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
-      .attr("text-anchor", "middle")
-      .text(d => {
-        return formatCount(d.length);
-      });
+    if (id === "handProb") {
+      bar.append("text")
+        // .transtion(t)
+        .attr("dy", ".75em")
+        .style("font-size", "6px")
+        .attr("y", ".4em")
+        .attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2 - 15)
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .text(d => {
+          return formatCount(d.length);
+        });
+    } else {
+      bar.append("text")
+         // .transtion(t)
+         .attr("dy", ".75em")
+         .attr("y", 6)
+         .attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
+         .attr("text-anchor", "middle")
+         .text(d => {
+           return formatCount(d.length);
+         });
+    }
 
     g.append("g")
       .attr("class", "axis axis--x")
@@ -279,9 +303,20 @@ class ProbabilityController {
 
   drawSimpleCumulativeProbabilityGraph() {
     const svg = this.$d3.select("#cumulativeProb");
+
+    let viewPortWidth = Number(svg.attr("width"));
+    let viewPortHeight = Number(svg.attr("height"));
+
+    if (!svg.attr("width")) {
+      viewPortWidth = 400;
+    }
+    if (!svg.attr("height")) {
+      viewPortHeight = 200;
+    }
+
     const margin = {top: 20, right: 20, bottom: 30, left: 50};
-    const width = Number(svg.attr("width")) - margin.left - margin.right;
-    const height = Number(svg.attr("height")) - margin.top - margin.bottom;
+    const width = viewPortWidth - margin.left - margin.right;
+    const height = viewPortHeight - margin.top - margin.bottom;
     const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     const x = this.$d3.scaleLinear()
@@ -353,9 +388,20 @@ class ProbabilityController {
 
   drawMoreAccurateCumulativeProbabilityGraph() {
     const svg = this.$d3.select("#betterCumulativeProb");
+
+    let viewPortWidth = Number(svg.attr("width"));
+    let viewPortHeight = Number(svg.attr("height"));
+
+    if (!svg.attr("width")) {
+      viewPortWidth = 400;
+    }
+    if (!svg.attr("height")) {
+      viewPortHeight = 200;
+    }
+
     const margin = {top: 20, right: 20, bottom: 30, left: 50};
-    const width = Number(svg.attr("width")) - margin.left - margin.right;
-    const height = Number(svg.attr("height")) - margin.top - margin.bottom;
+    const width = viewPortWidth - margin.left - margin.right;
+    const height = viewPortHeight - margin.top - margin.bottom;
     const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     // Define the div for the tooltip

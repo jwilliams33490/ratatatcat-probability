@@ -11,6 +11,21 @@
   font: 10px sans-serif;
 }
 
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 50%; 
+	vertical-align: top; 
+	overflow: hidden; 
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 </style>
 
 <a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)" on-cards-array-changed="$ctrl.onCardsArrayChanged(enabledArray)" on-card-values-array-changed="$ctrl.onCardValuesArrayChanged(valuesArray)"></a-header>
@@ -29,7 +44,9 @@
 					</h3>
 				  </div>
 				  <div class="panel-body" ng-show="$ctrl.cards[0].show">
-					<svg id="card0Prob" width="400" height="200"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="card0Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 				  </div>
 				</div>		
 			</div>
@@ -45,7 +62,9 @@
 					</h3>
 				  </div>
 				  <div class="panel-body" ng-show="$ctrl.cards[1].show">
-					<svg id="card1Prob" width="400" height="200"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="card1Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 				  </div>
 				</div>		
 			</div>
@@ -65,7 +84,9 @@
 					</h3>
 				  </div>
 				  <div class="panel-body" ng-show="$ctrl.cards[2].show">
-					<svg id="card2Prob" width="400" height="200"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="card2Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 				  </div>
 				</div>		
 			</div>
@@ -81,7 +102,9 @@
 					</h3>
 				  </div>
 				  <div class="panel-body" ng-show="$ctrl.cards[3].show">
-					<svg id="card3Prob" width="400" height="200"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="card3Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 				  </div>
 				</div>		
 			</div>
@@ -96,7 +119,9 @@
 			    </h3>
 			  </div>
 			  <div class="panel-body">
-				<svg id="handProb" width="900" height="200"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="handProb" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 			  </div>
 			</div>		
 		</div>
@@ -143,6 +168,9 @@
 				  </div>
 				  <div class="panel-body">
 					  <svg id="betterCumulativeProb" width="900" height="500"></svg>
+				  	<div class="svg-container">
+						<svg class="svg-content" id="betterCumulativeProb" viewBox="0 0 400 300" preserveAspectRatio="xMinYMin meet" ></svg>
+					</div>
 				  </div>
 				</div>		
 			  </div>
