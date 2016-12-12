@@ -29,97 +29,40 @@
 </style>
 
 <a-header on-num-retries-changed="$ctrl.onNumRetriesChanged(numRetries)" on-num-cards-changed="$ctrl.onNumCardsChanged(numCards)" on-cards-array-changed="$ctrl.onCardsArrayChanged(enabledArray)" on-card-values-array-changed="$ctrl.onCardValuesArrayChanged(valuesArray)"></a-header>
-<div collapsible-panel badge-value="43" show-badge=true panel-title="mnoz"></div>
 <div class="container">
 	<div class="col-lg-6">
 		<div class="col-md-12">
 			<div class="col-sm-6" ng-show="$ctrl.cards[0].use">
-<!-- 
-				  <div id="card0" collapsible-panel panel-title="Card 1 Possibilities" badge-value="$scrl.cards[0].expectedValue" show-badge=true>
-				  	<div class="svg-container">
+			 	<div id="card0" collapsible-panel panel-title="Card 1 Possibilities" badge-value="$ctrl.cards[0].expectedValue" show-badge=true>
+			  		<div class="svg-container">
 						<svg class="svg-content" id="card0Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
 					</div>
-				  </div>
- -->
-				<div id="card0" class="panel panel-default">
- 				  <div class="panel-heading">
-				    <h3 class="panel-title">Card 1 Possibilities
-				    	<span>&nbsp;</span>
-						<span class="badge">{{$ctrl.cards[0].expectedValue}}</span>
-						<span class="pull-right" ng-click="$ctrl.togglePanel(0)" ng-switch on="$ctrl.cards[0].show">
-							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-						</span>
-					</h3>
-				  </div>
-				  <div class="panel-body" ng-show="$ctrl.cards[0].show">
-				  	<div class="svg-container">
-						<svg class="svg-content" id="card0Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
-					</div>
-				  </div>
-
-				</div>		
+				</div>
 			</div>
 			<div class="col-sm-6" ng-show="$ctrl.cards[1].use">
-				<div id="card1" class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Card 2 Possibilities
-				    	<span>&nbsp;</span>
-						<span class="badge">{{$ctrl.cards[1].expectedValue}}</span>
-						<span class="pull-right" ng-click="$ctrl.togglePanel(1)" ng-switch on="$ctrl.cards[1].show">
-							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-						</span>
-					</h3>
-				  </div>
-				  <div class="panel-body" ng-show="$ctrl.cards[1].show">
-				  	<div class="svg-container">
+			 	<div id="card1" collapsible-panel panel-title="Card 2 Possibilities" badge-value="$ctrl.cards[1].expectedValue" show-badge=true>
+			  		<div class="svg-container">
 						<svg class="svg-content" id="card1Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
 					</div>
-				  </div>
-				</div>		
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="col-lg-6">
 		<div class="col-md-12">
 			<div class="col-sm-6" ng-show="$ctrl.cards[2].use">
-				<div id="card2" class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Card 3 Possibilities
-				    	<span>&nbsp;</span>
-						<span class="badge">{{$ctrl.cards[2].expectedValue}}</span>
-						<span class="pull-right" ng-click="$ctrl.togglePanel(2)" ng-switch on="$ctrl.cards[2].show">
-							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-						</span>
-					</h3>
-				  </div>
-				  <div class="panel-body" ng-show="$ctrl.cards[2].show">
-				  	<div class="svg-container">
+			 	<div id="card2" collapsible-panel panel-title="Card 2 Possibilities" badge-value="$ctrl.cards[2].expectedValue" show-badge=true>
+			  		<div class="svg-container">
 						<svg class="svg-content" id="card2Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
 					</div>
-				  </div>
-				</div>		
+				</div>
 			</div>
 			<div class="col-sm-6" ng-show="$ctrl.cards[3].use">
-				<div id="card3" class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Card 4 Possibilities
-				    	<span>&nbsp;</span>
-						<span class="badge">{{$ctrl.cards[3].expectedValue}}</span>
-						<span class="pull-right" ng-click="$ctrl.togglePanel(3)" ng-switch on="$ctrl.cards[3].show">
-							<i class="glyphicon glyphicon-chevron-up" ng-switch-when="true"></i>
-							<i class="glyphicon glyphicon-chevron-down" ng-switch-when="false"></i>
-						</span>
-					</h3>
-				  </div>
-				  <div class="panel-body" ng-show="$ctrl.cards[3].show">
-				  	<div class="svg-container">
+			 	<div id="card3" collapsible-panel panel-title="Card 3 Possibilities" badge-value="$ctrl.cards[3].expectedValue" show-badge=true>
+			  		<div class="svg-container">
 						<svg class="svg-content" id="card3Prob" viewBox="0 0 400 200" preserveAspectRatio="xMinYMin meet" ></svg>
 					</div>
-				  </div>
-				</div>		
+				</div>
 			</div>
 		</div>
 	</div>

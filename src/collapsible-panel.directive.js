@@ -6,17 +6,13 @@ export default class CollapsiblePanel {
     this.restrict = 'A';
     this.controller = CollapsiblePanelController;
 
-    // this.transclude = true;
+    this.transclude = true;
 
     this.scope = {
       panelTitle: '@',
       showBadge: '<',
       badgeValue: '<'
     };
-
-    // this.link = function (scope, el, attrs, ctrl, transclude) {
-    //   el.find('.content').append(transclude());
-    // };
   }
 }
 
