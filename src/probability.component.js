@@ -98,10 +98,18 @@ class ProbabilityController {
     let viewPortHeight = Number(h.attr("height"));
 
     if (!h.attr("width")) {
-      viewPortWidth = 400;
+      if (id === "handProb") {
+        viewPortWidth = 400;
+      } else {
+        viewPortWidth = 400;
+      }
     }
     if (!h.attr("height")) {
-      viewPortHeight = 200;
+      if (id === "handProb") {
+        viewPortHeight = 200;
+      } else {
+        viewPortHeight = 200;
+      }
     }
 
     const margin = {top: 10, right: 30, bottom: 30, left: 30};
@@ -308,10 +316,10 @@ class ProbabilityController {
     let viewPortHeight = Number(svg.attr("height"));
 
     if (!svg.attr("width")) {
-      viewPortWidth = 400;
+      viewPortWidth = 900;
     }
     if (!svg.attr("height")) {
-      viewPortHeight = 200;
+      viewPortHeight = 500;
     }
 
     const margin = {top: 20, right: 20, bottom: 30, left: 50};
@@ -393,10 +401,10 @@ class ProbabilityController {
     let viewPortHeight = Number(svg.attr("height"));
 
     if (!svg.attr("width")) {
-      viewPortWidth = 400;
+      viewPortWidth = 900;
     }
     if (!svg.attr("height")) {
-      viewPortHeight = 200;
+      viewPortHeight = 500;
     }
 
     const margin = {top: 20, right: 20, bottom: 30, left: 50};

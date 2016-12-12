@@ -4,6 +4,7 @@ import 'angular-ui-router';
 import routesConfig from './routes';
 
 import prob from './probability.module.js';
+import CollapsiblePanel, {CollapsiblePanelController} from './collapsible-panel.directive.js';
 
 import './index.scss';
 
@@ -13,4 +14,6 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 angular
   .module('app', ['ui.router', prob])
-  .config(routesConfig);
+	.directive('collapsiblePanel', ['$log', $log => new CollapsiblePanel($log)])
+	.controller('collapsiblePanelController', CollapsiblePanelController)
+    .config(routesConfig);
