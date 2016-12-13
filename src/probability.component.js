@@ -13,6 +13,8 @@ class ProbabilityController {
       card.show = true;
       card.deck = [];
       card.actualValue = -1;
+      card.maxKnownValue = 9;
+      card.isKnownValue = false;
       card.expectedValue = 0;
       this.cards.push(card);
     }
@@ -40,7 +42,7 @@ class ProbabilityController {
   }
 
   setCardDataAndRedrawHistograms(newDraw) {
-    this.selectXCardsFromDeck(this.valueDeck);
+    this.selectXCardsFromDeck(this.deckInUse);
 
     for (let ci = 0; ci < 4; ci++) {
       this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].deck, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
@@ -421,10 +423,24 @@ class ProbabilityController {
     let idx = 0;
     valuesArray.forEach(n => {
       this.cards[idx].actualValue = n;
+      this.cards[idx].isKnownValue = (n.length === 1 && n !== "?");
+      this.cards[idx].maxKnownValue = this.readMaxValueFromDropdownValue(this.cards[idx]);
       idx++;
     });
     this.setCardDataAndRedrawHistograms(false);
     this.$log.log(this.cards);
+  }
+
+  readMaxValueFromDropdownValue(card) {
+    if (card.isKnownValue) {
+      return Number(card.actualValue);
+    } else if (card.actualValue === "?") {
+      return 9;
+    } else if (card.length < 4) {
+      return 9;
+    }
+    const pre = "<= ";
+    return Number(card.actualValue.substring(pre.length));
   }
 }
 

@@ -21,79 +21,20 @@
         <div class="form-group">
           <input type="number" class="form-control" placeholder="Number of cards" min="1" max="4" ng-model="$ctrl.numberOfCards" ng-disabled="true">
         </div>
-        <div class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">= <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">=</a></li>
-              <li><a href="#"><</a></li>
-            </ul>
-          </div>
-          <input type="number" class="form-control" ng-change=$ctrl.changeCardValue('card1') min="-1" max="9" ng-disabled="!$ctrl.useCard1" ng-model="$ctrl.card1">
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard1')>
-              <span ng-switch on="$ctrl.useCard1">
-                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
-                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
-              </span>
-            </button>
-          </div>
+        <div class="form-group" ng-repeat="i in [0,1,2,3]">
+          <select class="form-control" name="repeatSelect" id="repeatSelect" ng-model="$ctrl.card[i]" ng-disabled="!$ctrl.useCard[i]" ng-change=$ctrl.changeCardValue2(i) >
+            <option ng-repeat="option in $ctrl.cardChoices" value="{{option}}">{{option}}</option>
+          </select>
+          <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled2(i)>
+            <span ng-switch on="$ctrl.useCard1">
+              <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
+              <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
+            </span>
+          </button>
+          <span>&nbsp;</span>
+          <span>&nbsp;</span>
         </div>
-        <div class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">= <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">=</a></li>
-              <li><a href="#"><</a></li>
-            </ul>
-          </div>
-          <input type="number" class="form-control" ng-change=$ctrl.changeCardValue('card2') min="-1" max="9" ng-disabled="!$ctrl.useCard2" ng-model="$ctrl.card2">
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard2')>
-              <span ng-switch on="$ctrl.useCard2">
-                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
-                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-        <div class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">= <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">=</a></li>
-              <li><a href="#"><</a></li>
-            </ul>
-          </div>
-          <input type="number" class="form-control" ng-change=$ctrl.changeCardValue('card3') min="-1" max="9" ng-disabled="!$ctrl.useCard3" ng-model="$ctrl.card3">
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard3')>
-              <span ng-switch on="$ctrl.useCard3">
-                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
-                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-        <div class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">= <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">=</a></li>
-              <li><a href="#"><</a></li>
-            </ul>
-          </div>
-          <input type="number" class="form-control" ng-change=$ctrl.changeCardValue('card4') min="-1" max="9" ng-disabled="!$ctrl.useCard4" ng-model="$ctrl.card4">
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click=$ctrl.toggleEnabled('useCard4')>
-              <span ng-switch on="$ctrl.useCard4">
-                <i class="glyphicon glyphicon-remove" ng-switch-when="true"></i>
-                <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
-              </span>
-            </button>
-          </div>
-        </div>
-      </form>
+       </form>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

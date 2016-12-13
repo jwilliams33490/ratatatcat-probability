@@ -5,30 +5,14 @@ class probabilityService {
     const self = this;
     d3Service.d3().then(d3 => {
       self.$d3 = d3;
-      // self.finishInit(d3);
     });
   }
 
-  // selectXCardsFromDeck(deck) {
-  //   this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
-
-  //   for (let ci = 0; ci < 4; ci++) {
-  //     this.selectXCardsFromDeckForOneCard(deck, this.cards[ci]);
-  //   }
-
-  //   this.hand = [];
-  //   for (let i = 0; i < this.numberOfSelections; i++) {
-  //     this.hand[i] = this.cards[0].deck[i] + this.cards[1].deck[i] + this.cards[2].deck[i] + this.cards[3].deck[i];
-  //   }
-  //   this.handExpectedValue = `${this.calcAvg(this.hand).toFixed(2)}*`;
-  // }
-
   selectXCardsFromDeckForOneCard(deck, numberOfSelections, card) {
-    this.$log.log('x');
     card.deck = this.$d3.range(numberOfSelections).map(() => {
       if (card.use) {
         if (this.useActualValue(card)) {
-          return card.actualValue;
+          return card.maxKnownValue;
         }
         return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
       }
@@ -41,7 +25,7 @@ class probabilityService {
   }
 
   useActualValue(card) {
-    return card.actualValue !== -1;
+    return card.isKnownValue;
   }
 
   calcAvg(arrayOfValues) {
