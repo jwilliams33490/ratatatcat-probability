@@ -1,8 +1,9 @@
 class ProbabilityController {
-  constructor(d3Service, $document, $log) {
+  constructor(d3Service, $document, $log, probabilityService) {
     this.$document = $document;
     this.$log = $log;
     this.$d3 = null;
+    this.probabilityService = probabilityService;
     this.handExpectedValue = 0;
 
     this.cards = [];
@@ -17,11 +18,11 @@ class ProbabilityController {
     }
 
     this.hand = [];
-    this.deck = this.allCards();
-    this.valueDeck = this.valueCards();
+    this.deck = this.probabilityService.allCards();
+    this.valueDeck = this.probabilityService.valueCards();
     this.deckInUse = this.valueDeck;
-    this.deckInUseData = this.setDeckData(this.deckInUse);
-    this.deckCumulativeData = this.setCumulativeProbabilitesData(this.deckInUse);
+    this.deckInUseData = this.probabilityService.setDeckData(this.deckInUse);
+    this.deckCumulativeData = this.probabilityService.setCumulativeProbabilitesData(this.deckInUse);
 
     this.numberOfSelections = 50000;
     this.numberOfCards = 4;
@@ -51,42 +52,14 @@ class ProbabilityController {
     this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
 
     for (let ci = 0; ci < 4; ci++) {
-      this.selectXCardsFromDeckForOneCard(deck, this.cards[ci]);
+      this.probabilityService.selectXCardsFromDeckForOneCard(deck, this.numberOfSelections, this.cards[ci]);
     }
 
     this.hand = [];
     for (let i = 0; i < this.numberOfSelections; i++) {
       this.hand[i] = this.cards[0].deck[i] + this.cards[1].deck[i] + this.cards[2].deck[i] + this.cards[3].deck[i];
     }
-    this.handExpectedValue = `${this.calcAvg(this.hand).toFixed(2)}*`;
-  }
-
-  selectXCardsFromDeckForOneCard(deck, card) {
-    card.deck = this.$d3.range(this.numberOfSelections).map(() => {
-      if (card.use) {
-        if (this.useActualValue(card)) {
-          return card.actualValue;
-        }
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    card.expectedValue = this.calcAvg(card.deck);
-    if (!this.useActualValue(card)) {
-      card.expectedValue = `${card.expectedValue.toFixed(2)}*`;
-    }
-  }
-
-  useActualValue(card) {
-    return card.actualValue !== -1;
-  }
-
-  calcAvg(arrayOfValues) {
-    let i = 0;
-    arrayOfValues.forEach(n => {
-      i += n;
-    });
-    return i / arrayOfValues.length;
+    this.handExpectedValue = `${this.probabilityService.calcAvg(this.hand).toFixed(2)}*`;
   }
 
   buildCardHistogram(id, data, dataDomain, newDraw) {
@@ -220,88 +193,6 @@ class ProbabilityController {
         .attr("fill", "none")
         .attr("transform", `translate(${xAxisBackingStart}, 0.5)`)
         .attr("d", xAxisBackingLine);
-  }
-
-  mapSelectionToCard(roll, deck) {
-    return deck[roll];
-  }
-
-  valueCards() {
-    const cards = [];
-    let x = 0;
-    let numOfRank = 9;
-    let numOfDuplicates = 4;
-    for (let y = 0; y < numOfRank; y++) {
-      for (let w = 0; w < numOfDuplicates; w++) {
-        cards[(y * numOfDuplicates) + w] = x;
-      }
-      x += 1;
-    }
-    const startAt = numOfRank * numOfDuplicates;
-    numOfRank = 1;
-    numOfDuplicates = 9;
-    for (let y = 0; y < 1; y++) {
-      for (let w = 0; w < numOfDuplicates; w++) {
-        cards[startAt + (y * numOfDuplicates) + w] = x;
-      }
-      x += 1;
-    }
-    return cards;
-  }
-
-  allCards() {
-    const cards = this.valueCards();
-    let x = 11;
-    const startAt = cards.length - 1;
-    const numOfRank = 3;
-    const numOfDuplicates = 3;
-    for (let y = 0; y < numOfRank; y++) {
-      for (let w = 0; w < numOfDuplicates; w++) {
-        cards[startAt + (y * numOfDuplicates) + w] = x;
-      }
-      x += 1;
-    }
-    return cards;
-  }
-
-  setCumulativeProbabilitesData(deck) {
-    let currentSuit = -1;
-    let currentCumulativeSuit = null;
-    const cumulativeSuitData = [];
-    deck.forEach(card => {
-      if (currentSuit !== card) {
-        if (currentCumulativeSuit) {
-          cumulativeSuitData.push(currentCumulativeSuit);
-        }
-        currentCumulativeSuit = {id: card, count: 0};
-        currentSuit = card;
-      }
-      currentCumulativeSuit.count++;
-    });
-    if (currentCumulativeSuit) {
-      cumulativeSuitData.push(currentCumulativeSuit);
-    }
-
-    let totalSoFar = 0;
-    cumulativeSuitData.forEach(suit => {
-      totalSoFar += suit.count;
-      suit.cumulativeCount = totalSoFar;
-    });
-    return cumulativeSuitData;
-  }
-
-  setDeckData(deck) {
-    const data = {};
-    let min = Number.POSITIVE_INFINITY;
-    let max = Number.NEGATIVE_INFINITY;
-    deck.forEach(c => {
-      min = Math.min(c, min);
-      max = Math.max(c, max);
-    });
-    data.suitMin = min;
-    data.suitMax = max;
-
-    return data;
   }
 
   drawCumulativeProbabilityGraph() {
@@ -537,7 +428,7 @@ class ProbabilityController {
   }
 }
 
-ProbabilityController.$inject = ['d3Service', '$document', '$log'];
+ProbabilityController.$inject = ['d3Service', '$document', '$log', 'probabilityService'];
 
 export const probability = {
   template: require('./probability.html'),
