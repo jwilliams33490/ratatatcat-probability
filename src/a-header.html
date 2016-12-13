@@ -22,6 +22,8 @@
           <input type="number" class="form-control" placeholder="Number of cards" min="1" max="4" ng-model="$ctrl.numberOfCards" ng-disabled="true">
         </div>
         <div class="form-group" ng-repeat="i in [0,1,2,3]">
+          <span>&nbsp;</span>
+          <span>&nbsp;</span>
           <select class="form-control" name="repeatSelect" id="repeatSelect" ng-model="$ctrl.card[i]" ng-disabled="!$ctrl.useCard[i]" ng-change=$ctrl.changeCardValue2(i) >
             <option ng-repeat="option in $ctrl.cardChoices" value="{{option}}">{{option}}</option>
           </select>
@@ -31,8 +33,6 @@
               <i class="glyphicon glyphicon-remove-sign" ng-switch-when="false"></i>
             </span>
           </button>
-          <span>&nbsp;</span>
-          <span>&nbsp;</span>
         </div>
        </form>
     </div><!-- /.navbar-collapse -->

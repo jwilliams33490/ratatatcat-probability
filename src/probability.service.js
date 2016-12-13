@@ -9,7 +9,7 @@ class probabilityService {
   }
 
   selectXCardsFromDeckForOneCard(deck, numberOfSelections, card) {
-    card.deck = this.$d3.range(numberOfSelections).map(() => {
+    card.selectedValues = this.$d3.range(numberOfSelections).map(() => {
       if (card.use) {
         if (this.useActualValue(card)) {
           return card.maxKnownValue;
@@ -18,7 +18,7 @@ class probabilityService {
       }
       return 0;
     });
-    card.expectedValue = this.calcAvg(card.deck);
+    card.expectedValue = this.calcAvg(card.selectedValues);
     if (!this.useActualValue(card)) {
       card.expectedValue = `${card.expectedValue.toFixed(2)}*`;
     }

@@ -11,7 +11,7 @@ class ProbabilityController {
       const card = {};
       card.use = true;
       card.show = true;
-      card.deck = [];
+      card.selectedValues = [];
       card.actualValue = -1;
       card.maxKnownValue = 9;
       card.isKnownValue = false;
@@ -45,7 +45,7 @@ class ProbabilityController {
     this.selectXCardsFromDeck(this.deckInUse);
 
     for (let ci = 0; ci < 4; ci++) {
-      this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].deck, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
+      this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].selectedValues, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
     }
     this.buildCardHistogram("handProb", this.hand, [((this.numberOfCards * this.deckInUseData.suitMin) - 1), (this.numberOfCards * this.deckInUseData.suitMax) + 2], newDraw);
   }
@@ -59,7 +59,7 @@ class ProbabilityController {
 
     this.hand = [];
     for (let i = 0; i < this.numberOfSelections; i++) {
-      this.hand[i] = this.cards[0].deck[i] + this.cards[1].deck[i] + this.cards[2].deck[i] + this.cards[3].deck[i];
+      this.hand[i] = this.cards[0].selectedValues[i] + this.cards[1].selectedValues[i] + this.cards[2].selectedValues[i] + this.cards[3].selectedValues[i];
     }
     this.handExpectedValue = `${this.probabilityService.calcAvg(this.hand).toFixed(2)}*`;
   }
