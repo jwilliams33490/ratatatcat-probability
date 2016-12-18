@@ -97,12 +97,12 @@
 					  	</tr>
 					  </thead>
 					  <tbody>
-						  <tr ng-repeat="suit in $ctrl.deckCumulativeData">
+						  <tr ng-repeat="suit in $ctrl.genericDeckCumulativeData">
 					  		<tH>{{suit.id}}</th>
-					  		<td>{{suit.count}} / {{$ctrl.deckInUse.length}}</td>
-					  		<td>{{suit.count / $ctrl.deckInUse.length | number:4}}</td>
-					  		<td>{{suit.count / $ctrl.deckInUse.length * 100 | number:2}}%</td>
-					  		<td>{{suit.cumulativeCount / $ctrl.deckInUse.length * 100 | number:0}}%</td>
+					  		<td>{{suit.count}} / {{$ctrl.genericDeck.length}}</td>
+					  		<td>{{suit.count / $ctrl.genericDeck.length | number:4}}</td>
+					  		<td>{{suit.count / $ctrl.genericDeck.length * 100 | number:2}}%</td>
+					  		<td>{{suit.cumulativeCount / $ctrl.genericDeck.length * 100 | number:0}}%</td>
 					  	</tr>
 					  </tbody>
 				  </table>

@@ -446,16 +446,18 @@ class ProbabilityController {
 
   adjustDecks() {
     const startingDeck = this.createDeckWithKnownCardsRemoved();
+    this.$log.log('adjustDecks');
     this.cards.forEach(c => {
       const cardStartingDeck = [];
       startingDeck.forEach(n => {
         if (c.isKnownValue) {
-          cardStartingDeck.push(c);
+          cardStartingDeck.push(n);
         } else if (n <= c.maxKnownValue) {
           cardStartingDeck.push(n);
         }
       });
       c.deck = cardStartingDeck;
+      this.$log.log(c.deck);
     });
   }
 
@@ -463,6 +465,9 @@ class ProbabilityController {
     const startingDeck = [];
     const removeCards = [];
     this.genericDeck.forEach(c => startingDeck.push(c));
+    this.$log.log('generic');
+    this.$log.log(this.genericDeck);
+    this.$log.log(startingDeck);
 
     this.cards.forEach(cardData => {
       if (cardData.use && cardData.isKnownValue) {
