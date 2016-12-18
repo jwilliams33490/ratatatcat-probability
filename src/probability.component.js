@@ -22,9 +22,13 @@ class ProbabilityController {
     this.hand = [];
     this.deck = this.probabilityService.allCards();
     this.valueDeck = this.probabilityService.valueCards();
-    this.deckInUse = this.valueDeck;
-    this.deckInUseData = this.probabilityService.setDeckData(this.deckInUse);
-    this.deckCumulativeData = this.probabilityService.setCumulativeProbabilitesData(this.deckInUse);
+    this.genericDeck = this.valueDeck;
+    this.genericDeckData = this.probabilityService.setDeckData(this.genericDeck);
+    this.genericDeckCumulativeData = this.probabilityService.setCumulativeProbabilitesData(this.genericDeck);
+    for (let i = 0; i < 4; i++) {
+      this.cards[i].deck = this.valueDeck;
+    }
+    this.analyzeDecks();
 
     this.numberOfSelections = 50000;
     this.numberOfCards = 4;
@@ -41,20 +45,27 @@ class ProbabilityController {
     this.drawCumulativeProbabilityGraph();
   }
 
-  setCardDataAndRedrawHistograms(newDraw) {
-    this.selectXCardsFromDeck(this.deckInUse);
-
-    for (let ci = 0; ci < 4; ci++) {
-      this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].selectedValues, [(this.deckInUseData.suitMin - 1), (this.deckInUseData.suitMax + 2)], newDraw);
+  analyzeDecks() {
+    for (let i = 0; i < 4; i++) {
+      this.cards[i].deckData = this.probabilityService.setDeckData(this.cards[i].deck);
+      this.cards[i].deckCumulativeData = this.probabilityService.setCumulativeProbabilitesData(this.cards[i].deck);
     }
-    this.buildCardHistogram("handProb", this.hand, [((this.numberOfCards * this.deckInUseData.suitMin) - 1), (this.numberOfCards * this.deckInUseData.suitMax) + 2], newDraw);
   }
 
-  selectXCardsFromDeck(deck) {
+  setCardDataAndRedrawHistograms(newDraw) {
+    this.selectXCardsFromDeck();
+
+    for (let ci = 0; ci < 4; ci++) {
+      this.buildCardHistogram(`card${ci}Prob`, this.cards[ci].selectedValues, [(this.cards[ci].deckData.suitMin - 1), (this.cards[ci].deckData.suitMax + 2)], newDraw);
+    }
+    this.buildCardHistogram("handProb", this.hand, [((this.numberOfCards * this.genericDeckData.suitMin) - 1), (this.numberOfCards * this.genericDeckData.suitMax) + 2], newDraw);
+  }
+
+  selectXCardsFromDeck() {
     this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
 
     for (let ci = 0; ci < 4; ci++) {
-      this.probabilityService.selectXCardsFromDeckForOneCard(deck, this.numberOfSelections, this.cards[ci]);
+      this.probabilityService.selectXCardsFromDeckForOneCard(this.cards[ci].deck, this.numberOfSelections, this.cards[ci]);
     }
 
     this.hand = [];
@@ -243,8 +254,8 @@ class ProbabilityController {
         });
 
     const data = [];
-    this.deckCumulativeData.forEach(suit => {
-      const sub = [suit.id, (suit.cumulativeCount / this.deckInUse.length * 100)];
+    this.genericDeckCumulativeData.forEach(suit => {
+      const sub = [suit.id, (suit.cumulativeCount / this.genericDeck.length * 100)];
       data.push(sub);
     });
 
@@ -325,8 +336,8 @@ class ProbabilityController {
         });
 
     const basicData = [];
-    this.deckCumulativeData.forEach(suit => {
-      const sub = [suit.id, (suit.cumulativeCount / this.deckInUse.length * 100)];
+    this.genericDeckCumulativeData.forEach(suit => {
+      const sub = [suit.id, (suit.cumulativeCount / this.genericDeck.length * 100)];
       basicData.push(sub);
     });
 
@@ -427,8 +438,45 @@ class ProbabilityController {
       this.cards[idx].maxKnownValue = this.readMaxValueFromDropdownValue(this.cards[idx]);
       idx++;
     });
+    this.adjustDecks();
+    this.analyzeDecks();
     this.setCardDataAndRedrawHistograms(false);
     this.$log.log(this.cards);
+  }
+
+  adjustDecks() {
+    const startingDeck = this.createDeckWithKnownCardsRemoved();
+    this.cards.forEach(c => {
+      const cardStartingDeck = [];
+      startingDeck.forEach(n => {
+        if (c.isKnownValue) {
+          cardStartingDeck.push(c);
+        } else if (n <= c.maxKnownValue) {
+          cardStartingDeck.push(n);
+        }
+      });
+      c.deck = cardStartingDeck;
+    });
+  }
+
+  createDeckWithKnownCardsRemoved() {
+    const startingDeck = [];
+    const removeCards = [];
+    this.genericDeck.forEach(c => startingDeck.push(c));
+
+    this.cards.forEach(cardData => {
+      if (cardData.use && cardData.isKnownValue) {
+        removeCards.push(cardData.maxKnownValue);
+      }
+    });
+
+    this.$log.log(removeCards);
+    removeCards.forEach(n => {
+      const idx = startingDeck.indexOf(n);
+      startingDeck.splice(idx, 1);
+    });
+
+    return startingDeck;
   }
 
   readMaxValueFromDropdownValue(card) {
