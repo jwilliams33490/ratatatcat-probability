@@ -121,6 +121,11 @@ class ProbabilityController {
       .domain([dataDomain[0] + 1, dataDomain[1] - 2])
       .rangeRound([0, width - (xAxisOffset * 3)]);
 
+    const xAxisTickValues = [];
+    for (let i = dataDomain[0] + 1; i < dataDomain[1] - 1; i++) {
+      xAxisTickValues.push(i);
+    }
+
     const hgram = this.$d3.histogram()
       .domain(x.domain())
       .thresholds(x.ticks(dataDomain[1] - dataDomain[0]));
@@ -194,10 +199,16 @@ class ProbabilityController {
          });
     }
 
+    let xAxisObj = this.$d3.axisBottom(xAxis)
+                    .tickValues(xAxisTickValues);
+    if (id === "handProb") {
+      xAxisObj = this.$d3.axisBottom(xAxis);
+    }
+
     g.append("g")
       .attr("class", "axis axis--x")
       .attr("transform", `translate(${xAxisStart}, ${height})`)
-      .call(this.$d3.axisBottom(xAxis));
+      .call(xAxisObj);
 
     g.append("path")
         .datum(xAxisBackingData)
