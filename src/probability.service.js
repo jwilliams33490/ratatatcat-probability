@@ -24,6 +24,79 @@ class probabilityService {
     }
   }
 
+  selectOneCardFromDeckWithoutReplacement(deck, card) {
+    let deckCardIdx = -1;
+    if (card.use) {
+      if (this.useActualValue(card)) {
+        card.selectedValues.push(card.maxKnownValue);
+        for (let i = 0; i < deck.length; i++) {
+          if (deck[i] === card.maxKnownValue) {
+            deckCardIdx = i;
+          }
+        }
+      } else {
+        let maxIdx = deck.length - 1;
+        if (card.maxKnownValue < 9) {
+          // assuming deck is sorted, we can reduce sort-space to 0 - maxKnownValue
+          for (let i = 0; i < deck.length; i++) {
+            if (deck[i] <= card.maxKnownValue) {
+              maxIdx = i;
+            }
+          }
+        }
+        deckCardIdx = this.getRandomIdx(maxIdx);
+        card.selectedValues.push(deck[deckCardIdx]);
+      }
+    } else {
+      card.selectedValues.push(0);
+    }
+
+    // remove the selected card from deck
+    if (deckCardIdx > -1) {
+      deck.splice(deckCardIdx, 1);
+    }
+
+    return deck;
+  }
+
+  selectOneHandFromDeckWithoutReplacement(deck, cards) {
+    let deckInUse = deck;
+    for (let i = 0; i < cards.length; i++) {
+      deckInUse = this.selectOneCardFromDeckWithoutReplacement(deckInUse, cards[i]);
+    }
+  }
+
+  selectXHandsFromDeckWithoutReplacement(deck, cards, numberOfSelections) {
+    cards.forEach(c => {
+      c.selectedValues = [];
+    });
+
+    for (let i = 0; i < numberOfSelections; i++) {
+      const freshDeck = [];
+      deck.forEach(n => freshDeck.push(n));
+      this.selectOneHandFromDeckWithoutReplacement(freshDeck, cards);
+    }
+  }
+
+  calculatedCardExpectedValue(card) {
+    card.expectedValue = this.calcAvg(card.selectedValues);
+    if (!this.useActualValue(card)) {
+      card.expectedValue = `${card.expectedValue.toFixed(2)}*`;
+    }
+  }
+
+  calculateHandExpectedValues(cards) {
+    cards.forEach(c => this.calculatedCardExpectedValue(c));
+  }
+
+  getRandomIdx(max) {
+    return this.getRandomInt(0, max);
+  }
+
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   useActualValue(card) {
     return card.isKnownValue;
   }
@@ -36,8 +109,8 @@ class probabilityService {
     return i / arrayOfValues.length;
   }
 
-  mapSelectionToCard(roll, deck) {
-    return deck[roll];
+  mapSelectionToCard(selectionIdx, deck) {
+    return deck[selectionIdx];
   }
 
   valueCards() {

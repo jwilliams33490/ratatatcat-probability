@@ -30,7 +30,7 @@ class ProbabilityController {
     }
     this.analyzeDecks();
 
-    this.numberOfSelections = 50000;
+    this.numberOfSelections = 5000;
     this.numberOfCards = 4;
 
     const self = this;
@@ -62,11 +62,8 @@ class ProbabilityController {
   }
 
   selectXCardsFromDeck() {
-    this.$log.log(`recalculating...numberOfCards: ${this.numberOfCards}`);
-
-    for (let ci = 0; ci < 4; ci++) {
-      this.probabilityService.selectXCardsFromDeckForOneCard(this.cards[ci].deck, this.numberOfSelections, this.cards[ci]);
-    }
+    this.probabilityService.selectXHandsFromDeckWithoutReplacement(this.genericDeck, this.cards, this.numberOfSelections);
+    this.probabilityService.calculateHandExpectedValues(this.cards);
 
     this.hand = [];
     for (let i = 0; i < this.numberOfSelections; i++) {
@@ -416,7 +413,6 @@ class ProbabilityController {
   }
 
   onNumCardsChanged(value) {
-    this.$log.log(`on numcards changed: ${value}`);
     this.numberOfCards = value;
     this.setCardDataAndRedrawHistograms(false);
   }
@@ -441,7 +437,6 @@ class ProbabilityController {
   }
 
   onCardValuesArrayChanged(valuesArray) {
-    this.$log.log(this.cards);
     let idx = 0;
     valuesArray.forEach(n => {
       this.cards[idx].actualValue = n;
@@ -452,12 +447,10 @@ class ProbabilityController {
     this.adjustDecks();
     this.analyzeDecks();
     this.setCardDataAndRedrawHistograms(false);
-    this.$log.log(this.cards);
   }
 
   adjustDecks() {
     const startingDeck = this.createDeckWithKnownCardsRemoved();
-    this.$log.log('adjustDecks');
     this.cards.forEach(c => {
       const cardStartingDeck = [];
       startingDeck.forEach(n => {
@@ -468,7 +461,6 @@ class ProbabilityController {
         }
       });
       c.deck = cardStartingDeck;
-      this.$log.log(c.deck);
     });
   }
 
@@ -476,9 +468,6 @@ class ProbabilityController {
     const startingDeck = [];
     const removeCards = [];
     this.genericDeck.forEach(c => startingDeck.push(c));
-    this.$log.log('generic');
-    this.$log.log(this.genericDeck);
-    this.$log.log(startingDeck);
 
     this.cards.forEach(cardData => {
       if (cardData.use && cardData.isKnownValue) {
@@ -486,7 +475,6 @@ class ProbabilityController {
       }
     });
 
-    this.$log.log(removeCards);
     removeCards.forEach(n => {
       const idx = startingDeck.indexOf(n);
       startingDeck.splice(idx, 1);

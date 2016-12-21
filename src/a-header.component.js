@@ -1,7 +1,7 @@
 class AHeaderController {
   constructor($log) {
     this.$log = $log;
-    this.numberOfRetries = 1000;
+    this.numberOfRetries = 5000;
     this.numberOfCards = 4;
     // this.cardChoices = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     this.cardChoices = ['?', '0', '<= 1', '1', '<= 2', '2', '<= 3', '3', '<= 4', '4', '<= 5', '5', '<= 6', '6', '<= 7', '7', '<= 8', '8', '<= 9', '9'];
