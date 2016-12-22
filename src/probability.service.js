@@ -8,22 +8,6 @@ class probabilityService {
     });
   }
 
-  selectXCardsFromDeckForOneCard(deck, numberOfSelections, card) {
-    card.selectedValues = this.$d3.range(numberOfSelections).map(() => {
-      if (card.use) {
-        if (this.useActualValue(card)) {
-          return card.maxKnownValue;
-        }
-        return this.mapSelectionToCard(Math.random() * deck.length | 0, deck);
-      }
-      return 0;
-    });
-    card.expectedValue = this.calcAvg(card.selectedValues);
-    if (!this.useActualValue(card)) {
-      card.expectedValue = `${card.expectedValue.toFixed(2)}*`;
-    }
-  }
-
   selectOneCardFromDeckWithoutReplacement(deck, card) {
     let deckCardIdx = -1;
     if (card.use) {

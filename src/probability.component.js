@@ -412,11 +412,6 @@ class ProbabilityController {
     this.setCardDataAndRedrawHistograms(false);
   }
 
-  onNumCardsChanged(value) {
-    this.numberOfCards = value;
-    this.setCardDataAndRedrawHistograms(false);
-  }
-
   togglePanel(idx) {
     this.cards[idx].show = !this.cards[idx].show;
   }
