@@ -13,7 +13,6 @@ class AHeaderController {
   }
 
   numRetriesChanged() {
-    this.$log.log(`in numRetriesChanged: ${this.numberOfRetries}`);
     if (this.onNumRetriesChanged) {
       this.onNumRetriesChanged({numRetries: this.numberOfRetries});
     }
