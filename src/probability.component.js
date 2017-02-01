@@ -1,10 +1,13 @@
 class ProbabilityController {
-  constructor(d3Service, $document, $log, probabilityService) {
+  constructor(d3Service, $document, $log, probabilityService, SalaryService) {
     this.$document = $document;
     this.$log = $log;
     this.$d3 = null;
     this.probabilityService = probabilityService;
     this.handExpectedValue = 0;
+
+    this.SalaryService = SalaryService;
+    this.ezeSalary = 80000;
 
     this.cards = [];
     for (let i = 0; i < 4; i++) {
@@ -38,6 +41,12 @@ class ProbabilityController {
       self.$d3 = d3;
       self.finishInit(d3);
     });
+  }
+
+  salaryValuesChanged() {
+    this.$log.log(`ezeSalary: ${this.ezeSalary}`);
+    this.$log.log(`hi`);
+    this.SalaryService.save({ezeSalary: this.ezeSalary, ezeSeverance: 10000, ezeRetention: 10000, newSalary: 85000, newBonus: 20000});
   }
 
   finishInit() {
@@ -491,7 +500,7 @@ class ProbabilityController {
   }
 }
 
-ProbabilityController.$inject = ['d3Service', '$document', '$log', 'probabilityService'];
+ProbabilityController.$inject = ['d3Service', '$document', '$log', 'probabilityService', 'SalaryService'];
 
 export const probability = {
   template: require('./probability.html'),
